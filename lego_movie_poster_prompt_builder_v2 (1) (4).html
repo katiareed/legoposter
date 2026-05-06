@@ -1,0 +1,116 @@
+
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">LEGO Movie Poster Prompt Builder with bilingual title and director name</h2>
+
+<div style="padding:1.5rem 0;">
+
+  <div style="margin-bottom:1.5rem;">
+    <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 4px;">1. What is your movie about? (Topic / theme)</p>
+    <input id="topic" type="text" placeholder="e.g. a space adventure, a Lunar New Year celebration, a mystery in ancient China" style="width:100%;box-sizing:border-box;" />
+  </div>
+
+  <div style="margin-bottom:1.5rem;">
+    <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 4px;">2. Who is the main character? (Describe them as a LEGO minifigure)</p>
+    <input id="character" type="text" placeholder="e.g. a brave female astronaut with a red helmet, a wise old scholar in Tang dynasty robes" style="width:100%;box-sizing:border-box;" />
+  </div>
+
+  <div style="margin-bottom:1.5rem;">
+    <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 4px;">3. What is the setting / background?</p>
+    <input id="setting" type="text" placeholder="e.g. the Great Wall at sunset, a futuristic Shanghai skyline, an enchanted forest" style="width:100%;box-sizing:border-box;" />
+  </div>
+
+  <div style="margin-bottom:1.5rem;">
+    <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 4px;">4. What is the mood or atmosphere?</p>
+    <select id="mood" style="width:100%;box-sizing:border-box;">
+      <option value="">-- Choose a mood --</option>
+      <option value="epic and dramatic">Epic and dramatic</option>
+      <option value="mysterious and suspenseful">Mysterious and suspenseful</option>
+      <option value="fun and colorful">Fun and colorful</option>
+      <option value="heartwarming and nostalgic">Heartwarming and nostalgic</option>
+      <option value="scary and tense">Scary and tense</option>
+      <option value="romantic and dreamy">Romantic and dreamy</option>
+    </select>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem;">
+    <div>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 4px;">5. Movie title in English</p>
+      <input id="title-en" type="text" placeholder="e.g. Legend of the Dragon" style="width:100%;box-sizing:border-box;" />
+    </div>
+    <div>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 4px;">6. Movie title in Mandarin (中文)</p>
+      <input id="title-zh" type="text" placeholder="e.g. 龙的传说" style="width:100%;box-sizing:border-box;" />
+    </div>
+  </div>
+
+  <div style="margin-bottom:1.5rem;">
+    <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 4px;">7. Director's name (your name)</p>
+    <input id="director" type="text" placeholder="e.g. Directed by Yuna Kim" style="width:100%;box-sizing:border-box;" />
+  </div>
+
+  <div style="margin-bottom:1.5rem;">
+    <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 4px;">8. Any extra details? (optional — props, colors, special effects)</p>
+    <input id="extras" type="text" placeholder="e.g. fireworks in the sky, glowing red lanterns, LEGO bricks visible in the ground" style="width:100%;box-sizing:border-box;" />
+  </div>
+
+  <button onclick="buildPrompt()">Generate My Prompt</button>
+
+  <div id="output" style="display:none;">
+    <div style="border-top:0.5px solid var(--color-border-tertiary);padding-top:1.25rem;margin:1.25rem 0 0.5rem;">
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 8px;">Your image generation prompt:</p>
+      <div id="prompt-box" style="background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:1rem;font-size:14px;line-height:1.7;color:var(--color-text-primary);white-space:pre-wrap;"></div>
+    </div>
+    <button onclick="copyPrompt()" id="copy-btn" style="margin-top:0.75rem;">Copy Prompt</button>
+    <p style="font-size:12px;color:var(--color-text-secondary);margin-top:0.75rem;">Paste this into Canva AI Image Generator, Adobe Firefly, or Microsoft Designer.</p>
+  </div>
+
+</div>
+
+<script>
+function buildPrompt() {
+  const topic = document.getElementById('topic').value.trim();
+  const character = document.getElementById('character').value.trim();
+  const setting = document.getElementById('setting').value.trim();
+  const mood = document.getElementById('mood').value;
+  const titleEn = document.getElementById('title-en').value.trim();
+  const titleZh = document.getElementById('title-zh').value.trim();
+  const director = document.getElementById('director').value.trim();
+  const extras = document.getElementById('extras').value.trim();
+
+  if (!topic || !character || !setting || !mood || !titleEn || !titleZh || !director) {
+    alert('Please fill in all required fields (1 through 7) before generating your prompt.');
+    return;
+  }
+
+  let prompt = `A professional LEGO movie poster in the style of an official LEGO Movie theatrical release. The poster features LEGO minifigure characters and a fully LEGO-brick-built world — everything is made of plastic LEGO pieces including the environment, props, and details.
+
+TITLE TEXT: The movie title appears twice on the poster — first in bold, colorful LEGO-style block lettering in English reading "${titleEn}", and directly below it in large, elegant Chinese characters reading "${titleZh}". Both titles are prominently displayed, with the English title slightly larger and the Mandarin title in a complementary traditional style. The bilingual title is the visual centerpiece of the poster layout.
+
+DIRECTOR CREDIT: At the bottom of the poster, in small classic movie-credit font, the text reads: "Directed by ${director}".
+
+Main character: ${character}, rendered as a LEGO minifigure with the characteristic yellow cylindrical head, blocky body, and visible stud details.
+
+Setting: ${setting}, constructed entirely from LEGO bricks with visible studs and plastic textures.
+
+Theme: ${topic}.
+
+Mood and lighting: ${mood}, with cinematic composition and dramatic movie-poster lighting.
+
+Style: Official theatrical movie poster format, portrait orientation, highly detailed LEGO plastic textures, vibrant saturated colors, photorealistic LEGO rendering, studio-quality illustration.`;
+
+  if (extras) {
+    prompt += `\n\nAdditional details: ${extras}.`;
+  }
+
+  document.getElementById('prompt-box').textContent = prompt;
+  document.getElementById('output').style.display = 'block';
+  document.getElementById('copy-btn').textContent = 'Copy Prompt';
+}
+
+function copyPrompt() {
+  const text = document.getElementById('prompt-box').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    document.getElementById('copy-btn').textContent = 'Copied!';
+    setTimeout(() => { document.getElementById('copy-btn').textContent = 'Copy Prompt'; }, 2000);
+  });
+}
+</script>
